@@ -1,55 +1,46 @@
-package com.company;
 public class Main {
     public static void main(String[] args) {
         Clothing[] clothes = {
-                new TShirt(Size.M, 1500, "голубой"),
-                new Pants(Size.L, 2500, "черный"),
-                new Skirt(Size.S, 2000, "красный"),
-                new Tie(Size.XS, 1000, "зеленый")
+                new TShirt(Size.M, 1200, "Белый"),
+                new Pants(Size.L, 2300, "Черный"),
+                new Skirt(Size.S, 1800, "Красный"),
+                new Tie(Size.XS, 900, "Синий"),
+                new TShirt(Size.XXS, 1000, "Желтый")
         };
 
         Atelier atelier = new Atelier();
-        atelier.dressMan(clothes);
-        atelier.dressWoman(clothes);
+        atelier.dressWomen(clothes);
+        atelier.dressMen(clothes);
     }
 }
-
-enum Size {
-    XXS(32) {
-        @Override
-        public String getDescription() {
+enum Size{
+    XXS(32){
+        @Override public String getDescription(){
             return "Детский размер";
         }
     },
     XS(34), S(36), M(38), L(40);
-
     private int euroSize;
-
-    Size(int euroSize) {
+    Size(int euroSize){
         this.euroSize = euroSize;
     }
-
-    public int getEuroSize() {
-        return euroSize;
-    }
-
-    public String getDescription() {
+    public String getDescription(){
         return "Взрослый размер";
     }
+    public int getEuroSize(){
+        return euroSize;
+    }
 }
-
-interface MenClothing {
-    void dressMan();
+interface MenClothing{
+    void DressMan();
 }
-
-interface WomenClothing {
-    void dressWoman();
+interface WomenClothing{
+    void DressWoman();
 }
-
 abstract class Clothing {
-    protected Size size;
-    protected double price;
-    protected String color;
+    public Size size;
+    public double price;
+    public String color;
 
     public Clothing(Size size, double price, String color) {
         this.size = size;
@@ -59,9 +50,8 @@ abstract class Clothing {
 
     @Override
     public String toString() {
-        return "Размер: " + size + " (" + size.getEuroSize() + "), " +
-                "Описание: " + size.getDescription() + ", " +
-                "Цена: " + price + ", Цвет: " + color;
+        return "Размер: " + size + " (" + size.getEuroSize() + ", " + size.getDescription() + "), " +
+                "Цвет: " + color + ", Цена: " + price + " руб.";
     }
 }
 
@@ -71,12 +61,12 @@ class TShirt extends Clothing implements MenClothing, WomenClothing {
     }
 
     @Override
-    public void dressMan() {
+    public void DressMan() {
         System.out.println("Мужская футболка: " + this);
     }
 
     @Override
-    public void dressWoman() {
+    public void DressWoman() {
         System.out.println("Женская футболка: " + this);
     }
 }
@@ -87,12 +77,12 @@ class Pants extends Clothing implements MenClothing, WomenClothing {
     }
 
     @Override
-    public void dressMan() {
+    public void DressMan() {
         System.out.println("Мужские штаны: " + this);
     }
 
     @Override
-    public void dressWoman() {
+    public void DressWoman() {
         System.out.println("Женские штаны: " + this);
     }
 }
@@ -103,8 +93,8 @@ class Skirt extends Clothing implements WomenClothing {
     }
 
     @Override
-    public void dressWoman() {
-        System.out.println("Юбка: " + this);
+    public void DressWoman() {
+        System.out.println("Женская юбка: " + this);
     }
 }
 
@@ -114,26 +104,27 @@ class Tie extends Clothing implements MenClothing {
     }
 
     @Override
-    public void dressMan() {
-        System.out.println("Галстук: " + this);
+    public void DressMan() {
+        System.out.println("Мужской галстук: " + this);
     }
 }
 
+// Atelier class
 class Atelier {
-    public void dressMan(Clothing[] clothes) {
-        System.out.println("=== Мужская одежда ===");
+    public void dressWomen(Clothing[] clothes) {
+        System.out.println("Одежда для женщин:");
         for (Clothing c : clothes) {
-            if (c instanceof MenClothing) {
-                ((MenClothing) c).dressMan();
+            if (c instanceof WomenClothing) {
+                ((WomenClothing) c).DressWoman();
             }
         }
     }
 
-    public void dressWoman(Clothing[] clothes) {
-        System.out.println("=== Женская одежда ===");
+    public void dressMen(Clothing[] clothes) {
+        System.out.println("Одежда для мужчин:");
         for (Clothing c : clothes) {
-            if (c instanceof WomenClothing) {
-                ((WomenClothing) c).dressWoman();
+            if (c instanceof MenClothing) {
+                ((MenClothing) c).DressMan();
             }
         }
     }
